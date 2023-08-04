@@ -83,25 +83,3 @@ class Kind:
         subprocess.run(f"kind delete cluster --name {cluster}", shell=True, check=True)
 
 
-class Minikube:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def start(version='1.26.3', memory=16384, cpus=6):
-        cmd = f"minikube start --kubernetes-version=v{version} --memory {memory} --cpus {cpus}"
-
-        logging.info(f"Creating a minikube cluster with version {version}")
-        subprocess.run(cmd, shell=True, check=True)
-        subprocess.run('minikube addons enable storage-provisioner', shell=True, check=True)
-        subprocess.run('minikube addons enable ingress', shell=True, check=True)
-
-
-def label_namespace(namespace, key, value):
-    logging.info(f"Labeling namespace {namespace} with {key}={value}")
-    subprocess.run(f"kubectl label namespace {namespace} {key}={value}", shell=True, check=True)
-
-
-def create_namespace(namespace):
-    logging.info(f"Creating namespace {namespace}")
-    subprocess.run(f"kubectl create namespace {namespace}", shell=True, check=True)
