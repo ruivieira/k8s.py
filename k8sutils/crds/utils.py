@@ -4,7 +4,7 @@ from termcolor import colored
 import k8sutils.crds as _crds
 
 
-def print(highlight=None):
+def table(highlight=None):
     """Print all CRDs in the cluster. Optionally highlight a CRD by name."""
     crds = _crds.get()
     table = PrettyTable(["Name", "Creation Date"])
@@ -17,3 +17,12 @@ def print(highlight=None):
             print(colored(line, 'green'))
         else:
             print(line)
+
+def is_installed(crd_name):
+    """Check if a specific CRD is installed in the cluster"""
+    crds = _crds.get()
+    for crd in crds['items']:
+        name = crd['metadata']['name']
+        if name == crd_name:
+            return True
+    return False
