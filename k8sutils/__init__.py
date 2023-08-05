@@ -35,6 +35,27 @@ def apply(yaml: str, namespace: Optional[int] = None) -> int:
         logging.error(f"Failed to apply {yaml}: {str(e)}")
         return e.returncode  # Return the non-zero exit status
 
+def delete(yaml: str, namespace: Optional[int] = None) -> int:
+    """Delete resources defined in a yaml file from the cluster.
+    The file can be local or remote.
+
+    :param yaml: The yaml file that defines the resources to delete
+    :param namespace: The namespace to delete the resources from
+    :return: The exit code of the kubectl command
+    """
+    cmd = f"kubectl delete -f {yaml}"
+
+    if namespace:
+        cmd += f" -n {namespace}"
+
+    logging.info(f"Deleting resources from {yaml}")
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+        return 0
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed to delete resources from {yaml}: {str(e)}")
+        return e.returncode  # Return the non-zero exit status
+
 
 def pipe_bash(url):
     ua = requests.get(url, stream=True)
