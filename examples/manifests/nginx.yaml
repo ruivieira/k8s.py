@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx # deployment resource name, pods running as a part of the deployment will share the name.
+  labels:
+    app: nginx # deployment resource label
+spec:
+  replicas: 1 # number of pods to run
+  selector:
+    matchLabels: # selector labels the replicaset looks for
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx # pod labels that must match selector
+        version: latest # arbitrary label we can match on elsewhere
+    spec:
+      containers:
+        - name: nginx # name of the container running inside a pod, different from the pod name
+          image: nginx:latest
+          ports:
+            - containerPort: 80 # port the container is listening on
