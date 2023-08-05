@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel","poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "k8s"
+name = "k8sutils"
 version = "0.1.0"
 description = "Kubernetes helper module for Python"
 authors = ["Rui Vieira <ruidevieira@googlemail.com>"]
