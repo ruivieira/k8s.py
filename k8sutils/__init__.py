@@ -1,5 +1,7 @@
 import logging
 import os
+from typing import Optional
+
 import requests
 import subprocess
 import tempfile
@@ -12,14 +14,26 @@ logging.basicConfig(level=logging.DEBUG,
                     datefmt="%Y-%m-%d %H:%M:%S")
 
 
-def apply(yaml, namespace=None):
+def apply(yaml: str, namespace: Optional[int] = None) -> int:
+    """Apply a yaml file to the cluster.
+    The file can be local or remote.
+
+    :param yaml: The yaml file to apply
+    :param namespace: The namespace to apply the yaml to
+    :return: The exit code of the kubectl command
+    """
     cmd = f"kubectl apply -f {yaml}"
 
     if namespace:
         cmd += f" -n {namespace}"
 
     logging.info(f"Applying {yaml}")
-    subprocess.run(cmd, shell=True, check=True)
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+        return 0
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed to apply {yaml}: {str(e)}")
+        return e.returncode  # Return the non-zero exit status
 
 
 def pipe_bash(url):
