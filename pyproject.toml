@@ -1,25 +1,26 @@
 [build-system]
-requires = ["setuptools", "wheel","poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.poetry]
+[project]
 name = "k8sutils"
 version = "0.1.0"
 description = "Kubernetes helper module for Python"
-authors = ["Rui Vieira <ruidevieira@googlemail.com>"]
-license = "Apache-2.0"
+authors = [{ name = "Rui Vieira", email = "ruidevieira@googlemail.com" }]
+license = { text = "Apache License Version 2.0" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["k8s", "kubernetes", "utilities"]
+dependencies = [
+    "requests==2.25.1",
+    "termcolor==1.1.0",
+    "prettytable==2.1.0"
+]
+requires-python = ">=3.8"
 
-[project]
-description = "Kubernetes helper module for Python"
-long_description = { file = "README.md" }
-long_description_content_type = "text/markdown"
 
-
-[tool.poetry.dependencies]
-python = "^3.8"
-requests = "^2.25.1"
-termcolor = "^1.1.0"
-prettytable = "^2.1.0"
-
-[tool.poetry.dev-dependencies]
-pytest = "^6.2.2"
+[project.optional-dependencies]
+dev = ["pytest==6.2.2"]
