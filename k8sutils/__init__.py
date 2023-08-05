@@ -1,12 +1,9 @@
-import json
 import logging
 import os
 import requests
 import subprocess
 import tempfile
 from urllib.parse import urlparse
-from termcolor import colored
-from prettytable import PrettyTable
 
 
 # Configure the logger
@@ -40,26 +37,6 @@ def pipe_bash(url):
 
 
     os.remove(filename)
-
-
-def list_crds():
-    json_text = subprocess.run("kubectl get crds -o json", shell=True, check=True, capture_output=True, text=True)
-    crds = json.loads(json_text.stdout)
-    return crds
-
-
-def print_crds(highlight=None):
-    crds = list_crds()
-    table = PrettyTable(["Name", "Creation Date"])
-
-    for crd in crds['items']:
-        table.add_row([crd['metadata']['name'], crd['metadata']['creationTimestamp']])
-
-    for line in str(table).split("\n"):
-        if highlight and highlight in line:
-            print(colored(line, 'green'))
-        else:
-            print(line)
 
 
 class Kind:
