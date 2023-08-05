@@ -9,6 +9,11 @@ description = "Kubernetes helper module for Python"
 authors = ["Rui Vieira <ruidevieira@googlemail.com>"]
 license = "Apache-2.0"
 
+[project]
+long_description = { file = "README.md" }
+long_description_content_type = "text/markdown"
+
+
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.25.1"
