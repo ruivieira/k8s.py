@@ -1,3 +1,5 @@
+from asyncio import sleep
+
 import k8sutils as k8s
 import k8sutils.deployments.utils as deployments
 import k8sutils.pods.utils as podsutils
@@ -13,3 +15,7 @@ nginx_pods = [pod['metadata']['name'] for pod in all_pods['items'] if 'nginx' in
 print(nginx_pods)
 
 pods.delete(nginx_pods[0])
+
+sleep(5)
+
+k8s.delete("manifests/nginx.yaml")
