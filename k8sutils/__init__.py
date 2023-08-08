@@ -6,6 +6,9 @@ import requests
 import subprocess
 import tempfile
 from urllib.parse import urlparse
+import yaml
+from dotty_dict import Dotty
+
 
 
 # Configure the logger
@@ -95,3 +98,29 @@ class Kind:
         subprocess.run(f"kind delete cluster --name {cluster}", shell=True, check=True)
 
 
+class Yaml:
+    def __init__(self, path):
+        with open(path, 'r') as file:
+            self.data = Dotty(yaml.safe_load(file))
+
+    def set(self, key, value):
+        keys = key.split(".")
+        item = self.data
+        for i in range(len(keys)):
+            part = keys[i]
+            if "[" in part and "]" in part:
+                sub_key, index = part[:-1].split("[")
+                index = int(index)
+                if sub_key:
+                    item = item[sub_key]
+                item[index] = value if i == len(keys) - 1 else item[index]
+            else:
+                if i == len(keys) - 1:
+                    item[part] = value
+                else:
+                    item = item[part]
+
+
+    def save(self, path):
+        with open(path, 'w') as file:
+            yaml.safe_dump(self.data.to_dict(), file)
