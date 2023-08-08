@@ -109,16 +109,20 @@ class Yaml:
         for i in range(len(keys)):
             part = keys[i]
             if "[" in part and "]" in part:
-                sub_key, index = part[:-1].split("[")
-                index = int(index)
+                sub_key, index_str = part.split("[")
+                index = int(index_str[:-1])  # Convert the index to an integer
                 if sub_key:
                     item = item[sub_key]
-                item[index] = value if i == len(keys) - 1 else item[index]
+                if i == len(keys) - 1:
+                    item[index] = value
+                else:
+                    item = item[index]
             else:
                 if i == len(keys) - 1:
                     item[part] = value
                 else:
                     item = item[part]
+
 
 
     def save(self, path):
