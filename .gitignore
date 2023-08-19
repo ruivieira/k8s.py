@@ -2,3 +2,4 @@
 examples/istio-*
 k8sutils.egg-info
 build
+__pycache__

@@ -9,8 +9,6 @@ from urllib.parse import urlparse
 import yaml
 from dotty_dict import Dotty
 
-
-
 # Configure the logger
 logging.basicConfig(level=logging.DEBUG,
                     format="%(asctime)s %(filename)s %(lineno)d> %(message)s",
@@ -37,6 +35,7 @@ def apply(yaml: str, namespace: Optional[int] = None) -> int:
     except subprocess.CalledProcessError as e:
         logging.error(f"Failed to apply {yaml}: {str(e)}")
         return e.returncode  # Return the non-zero exit status
+
 
 def delete(yaml: str, namespace: Optional[int] = None) -> int:
     """Delete resources defined in a yaml file from the cluster.
@@ -72,7 +71,6 @@ def pipe_bash(url):
     logging.debug(f"Downloaded {url}")
 
     subprocess.run(f"bash {filename}", shell=True, check=True, capture_output=False)
-
 
     os.remove(filename)
 
@@ -123,8 +121,20 @@ class Yaml:
                 else:
                     item = item[part]
 
-
-
-    def save(self, path):
+    def save(self, path: str):
+        """Save the YAML data to a file"""
         with open(path, 'w') as file:
             yaml.safe_dump(self.data.to_dict(), file)
+
+    def save_tmp(self, prefix: str = ""):
+        """Save the YAML data to a temporary file"""
+        # Create a temporary file with the specified prefix and suffix
+        temp_file = tempfile.NamedTemporaryFile(prefix=prefix, suffix=".yaml", dir="/tmp", delete=False)
+
+        self.save(temp_file.name)
+
+        # Close the file
+        temp_file.close()
+
+        # Return the full path to the temporary file
+        return temp_file.name
