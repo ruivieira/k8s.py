@@ -131,8 +131,7 @@ class Yaml:
         # Create a temporary file with the specified prefix and suffix
         temp_file = tempfile.NamedTemporaryFile(prefix=prefix, suffix=".yaml", dir="/tmp", delete=False)
 
-        # Write the YAML data to the temporary file
-        yaml.safe_dump(self.data.to_dict(), temp_file)
+        self.save(temp_file.name)
 
         # Close the file
         temp_file.close()
