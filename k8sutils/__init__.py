@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG,
                     datefmt="%Y-%m-%d %H:%M:%S")
 
 
-def apply(yaml: str, namespace: Optional[int] = None) -> int:
+def apply(yaml: str, namespace: Optional[str] = None) -> int:
     """Apply a yaml file to the cluster.
     The file can be local or remote.
 
