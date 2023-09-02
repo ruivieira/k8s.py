@@ -1,7 +1,10 @@
 from prettytable import PrettyTable
 from termcolor import colored
 import k8sutils.deployments as _deployments
+from k8sutils.annotations import rethrow
 
+
+@rethrow
 def table(highlight=None, namespace=None):
     """Print all deployments in the cluster. Optionally highlight a deployment by name."""
     deployments = _deployments.get(namespace=namespace)
