@@ -1,6 +1,10 @@
 import json
 import subprocess
 
+from k8sutils.annotations import rethrow
+
+
+@rethrow
 def get(namespace=None):
     """Get all deployments in the cluster"""
     cmd = "kubectl get deployments -o json"
